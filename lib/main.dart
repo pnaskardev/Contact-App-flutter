@@ -16,11 +16,7 @@ class MainApp extends StatelessWidget {
       title: 'IvyKids',
       theme: ThemeData(
         useMaterial3: true,
-          scaffoldBackgroundColor: CustomColors.bgColor,
-          textTheme: TextTheme
-          (
-              bodyMedium: TextStyle(color: CustomColors.textColor),
-              bodySmall: TextStyle(color: CustomColors.textColor))),
+        ),
       onGenerateRoute: (settings)=>generateRoute(settings),
       home: const AutheScreen()
     );

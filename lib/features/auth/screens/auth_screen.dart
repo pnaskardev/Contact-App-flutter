@@ -32,7 +32,7 @@ class _AuthScreenState extends State<AutheScreen> {
     return SafeArea(
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.grey[300],
+          // backgroundColor: Colors.grey[300],
           body: Center(
             child: Form(
               key: _formKey,
