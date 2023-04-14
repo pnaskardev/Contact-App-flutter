@@ -30,8 +30,8 @@ class _AuthScreenState extends State<AutheScreen> {
     _confirmPassword.dispose();
   }
 
-  void signUpuser() {
-    authService.signUpUser(
+  Future<void> signUpuser()async {
+    await authService.signUpUser(
         context: context,
         name: _usernameController.text,
         email: _emailController.text,
@@ -284,7 +284,7 @@ class _AuthScreenState extends State<AutheScreen> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              signUpuser();
+                              await signUpuser();
                               setState(() {
                                 _isLoading = false;
                               });

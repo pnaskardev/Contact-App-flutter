@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  void getUserData({
+  Future<int> getUserData({
     required BuildContext context,
   }) async {
     try {
@@ -39,15 +39,17 @@ class AuthService {
         var userProvider = Provider.of<UserProvider>(context, listen: false);
         print(userResponse.body);
         userProvider.setUser(userResponse.body);
+        return 1;
       }
     } catch (e) {
       log('---->${e.toString()}');
       showSnackBar(context, '${e.toString}');
     }
+    return 0;
   }
 
   // sign up user
-  void signUpUser({
+  Future signUpUser({
     required BuildContext context,
     required String name,
     required String email,
