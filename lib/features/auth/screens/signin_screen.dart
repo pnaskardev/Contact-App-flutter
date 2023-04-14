@@ -1,63 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:ivykids_assignment/features/auth/services/auth_service.dart';
 
-class SignInScreen extends StatefulWidget 
-{
+class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
   static const String routeName = '/sign-in';
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> 
-{
+class _SignInScreenState extends State<SignInScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final AuthService authService = AuthService();
   var _isLoading = false;
 
   @override
-  void dispose() 
-  {
+  void dispose() {
     super.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
   }
 
+  void signInUser() {
+    authService.signInUser(
+        context: context,
+        name: _usernameController.text,
+        password: _passwordController.text);
+  }
 
   @override
-  Widget build(BuildContext context) 
-  {
+  Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return SafeArea
-    (
-      child: Scaffold
-      (
+    return SafeArea(
+      child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Center
-        (
-          child: Form
-          (
-            key: _formKey,
-            child: Container
-            (
-              margin: const EdgeInsets.only(left: 25, right: 25),
-              alignment: Alignment.center,
-              child: Column
-              (
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: 
-                [
-                  Text
-                  (
-                    'Welcome back you have been missed!!!',
-                    style: TextStyle(color: Colors.grey[700], fontSize: 16),
-                  ),
-                  const SizedBox
-                  (
-                    height: 25,
-                  ),
-                   Padding(
+        body: Center(
+          child: Form(
+              key: _formKey,
+              child: Container(
+                margin: const EdgeInsets.only(left: 25, right: 25),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Welcome back you have been missed!!!',
+                      style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
                       child: TextFormField(
                         controller: _usernameController,
@@ -138,7 +133,10 @@ class _SignInScreenState extends State<SignInScreen>
                               setState(() {
                                 _isLoading = true;
                               });
-
+                              signInUser();
+                              setState(() {
+                                _isLoading = false;
+                              });
                               // await Provider.of<AuthService>(context, listen: false)
                               //   .submitPhoneNumber(
                               //   _usernameController.text.toString(), context);
@@ -162,10 +160,9 @@ class _SignInScreenState extends State<SignInScreen>
                                       fontSize: 16),
                                 )),
                     ),
-                ],
-              ),
-            )
-          ),
+                  ],
+                ),
+              )),
         ),
       ),
     );

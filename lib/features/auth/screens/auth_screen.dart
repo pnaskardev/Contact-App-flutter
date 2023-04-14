@@ -285,6 +285,9 @@ class _AuthScreenState extends State<AutheScreen> {
                                 _isLoading = true;
                               });
                               signUpuser();
+                              setState(() {
+                                _isLoading = false;
+                              });
                               // await Provider.of<AuthService>(context, listen: false)
                               //   .submitPhoneNumber(
                               //   _usernameController.text.toString(), context);

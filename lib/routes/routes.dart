@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ivykids_assignment/features/auth/screens/auth_screen.dart';
 import 'package:ivykids_assignment/features/auth/screens/signin_screen.dart';
+import 'package:ivykids_assignment/features/home/screens/home_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -10,6 +11,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case SignInScreen.routeName:
       return MaterialPageRoute(
           settings: routeSettings, builder: (_) => const SignInScreen());
+    case HomeScreen.routeName:
+      return MaterialPageRoute(
+          settings: routeSettings, builder: (_) => const HomeScreen());
     default:
       return MaterialPageRoute(
           builder: (_) => const Scaffold(
