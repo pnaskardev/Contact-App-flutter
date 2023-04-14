@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ivykids_assignment/features/auth/services/auth_service.dart';
+import 'package:ivykids_assignment/utils/string_validator.dart';
 
 class AutheScreen extends StatefulWidget {
   const AutheScreen({super.key});
@@ -16,6 +18,7 @@ class _AuthScreenState extends State<AutheScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPassword = TextEditingController();
+  final AuthService authService = AuthService();
   @override
   void dispose() {
     super.dispose();
@@ -24,6 +27,15 @@ class _AuthScreenState extends State<AutheScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPassword.dispose();
+  }
+
+  void signUpuser() {
+    authService.signUpUser(
+        context: context,
+        name: _usernameController.text,
+        email: _emailController.text,
+        phone: _phoneController.text,
+        password: _passwordController.text);
   }
 
   @override
@@ -94,7 +106,7 @@ class _AuthScreenState extends State<AutheScreen> {
                             filled: true),
                         keyboardType: TextInputType.name,
                       ),
-                    ),  
+                    ),
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -127,14 +139,12 @@ class _AuthScreenState extends State<AutheScreen> {
                             ),
                             fillColor: Colors.grey.shade200,
                             filled: true),
-                        // validator: (value)
-                        // {
-                        //   if (!StringValidator.validatePhone(value!))
-                        //   {
-                        //     return 'Invalid Phone Number';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (!StringValidator.validatePhone(value!)) {
+                            return 'Invalid Phone Number';
+                          }
+                          return null;
+                        },
                         keyboardType: TextInputType.phone,
                       ),
                     ),
@@ -171,15 +181,13 @@ class _AuthScreenState extends State<AutheScreen> {
                             ),
                             fillColor: Colors.grey.shade200,
                             filled: true),
-                        // validator: (value)
-                        // {
-                        //   if (!StringValidator.validatePhone(value!))
-                        //   {
-                        //     return 'Invalid Phone Number';
-                        //   }
-                        //   return null;
-                        // },
-                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (!StringValidator.validateEmail(value!)) {
+                            return 'Invalid email';
+                          }
+                          return null;
+                        },
+                        keyboardType: TextInputType.emailAddress,
                       ),
                     ),
 
@@ -271,15 +279,15 @@ class _AuthScreenState extends State<AutheScreen> {
                       width: deviceSize.width * 0.65,
                       child: ElevatedButton(
                           onPressed: () async {
-                            // if (_formKey.currentState!.validate())
-                            // {
-                            //   setState(() {
-                            //     _isLoading = true;
-                            //   });
-                            //   await Provider.of<AuthService>(context, listen: false)
-                            //     .submitPhoneNumber(
-                            //     _usernameController.text.toString(), context);
-                            // }
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                _isLoading = true;
+                              });
+                              signUpuser();
+                              // await Provider.of<AuthService>(context, listen: false)
+                              //   .submitPhoneNumber(
+                              //   _usernameController.text.toString(), context);
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
