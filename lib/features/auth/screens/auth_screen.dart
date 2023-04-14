@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ivykids_assignment/features/auth/screens/signin_screen.dart';
 import 'package:ivykids_assignment/features/auth/services/auth_service.dart';
 import 'package:ivykids_assignment/utils/string_validator.dart';
 
 class AutheScreen extends StatefulWidget {
   const AutheScreen({super.key});
-  static const String routeName = '/auth-screen';
+  static const String routeName = '/sign-up';
   @override
   State<AutheScreen> createState() => _AuthScreenState();
 }
@@ -313,7 +314,10 @@ class _AuthScreenState extends State<AutheScreen> {
                     ),
                     TextButton(
                       child: const Text('SignIn'),
-                      onPressed: () {},
+                      onPressed: () 
+                      {
+                        Navigator.of(context).pushNamed(SignInScreen.routeName);
+                      },
                     ),
                     // Padding
                     // (
