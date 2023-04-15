@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ivykids_assignment/model/contact.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -12,6 +13,7 @@ class User {
   final String email;
   final String password;
   final String token;
+  List<Contacts> contacts;
 
   User(
       {required this.id,
@@ -19,7 +21,8 @@ class User {
       required this.phone,
       required this.email,
       required this.password,
-      required this.token});
+      required this.token,
+      required this.contacts});
 
   // factory User.fromJson(Map<String, dynamic> map) => _$UserFromJson(map);
 
@@ -28,7 +31,7 @@ class User {
     return {
       'id': id,
       'name': name,
-      'phone':phone,
+      'phone': phone,
       'email': email,
       'password': password,
       'token': token,
@@ -43,30 +46,13 @@ class User {
       phone: map['phone'] ?? '',
       password: map['password'] ?? '',
       token: map['token'] ?? '',
+      contacts: (map['contacts'] as List<dynamic>?)
+          ?.map((e) => Contacts.fromJson(e))
+          .toList() ?? []
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory User.fromJson(String source) => User.fromMap(json.decode(source));
-
-  User copyWith({
-    String? id,
-    String? name,
-    String? email,
-    String? password,
-    String? address,
-    String? type,
-    String? token,
-    List<dynamic>? cart,
-  }) {
-    return User(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      phone:phone ?? this.phone,
-      email: email ?? this.email,
-      password: password ?? this.password,
-      token: token ?? this.token,
-    );
-  }
 }
