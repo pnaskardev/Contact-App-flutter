@@ -1,85 +1,167 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:ivykids_assignment/providers/user_provider.dart';
+import 'package:ivykids_assignment/utils/string_validator.dart';
+import 'package:provider/provider.dart';
 
-class FormWidget extends StatelessWidget 
-{
-  final _formKey = GlobalKey<FormState>();
-
-  FormWidget({super.key});
+class FormWidget extends StatefulWidget {
+  const FormWidget({super.key});
 
   @override
-  Widget build(BuildContext context) 
-  {
-    return Form
-    (
+  State<FormWidget> createState() => _FormWidgetState();
+}
+
+class _FormWidgetState extends State<FormWidget> {
+  var _isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  final _usernameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _usernameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
       key: _formKey,
-      child: Column
-      (
-        children: 
-        [
-          TextFormField
-          (
-            decoration: const InputDecoration
-            (
-              labelText: 'Name',
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _usernameController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                  label: const Text('Name'),
+                  enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.white)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.grey.shade400)),
+                  errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      )),
+                  focusedErrorBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                    ),
+                  ),
+                  fillColor: Colors.grey.shade200,
+                  filled: true),
+              keyboardType: TextInputType.name,
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your name';
-              }
-              return null;
-            },
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Email',
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _emailController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                  label: const Text('Email'),
+                  enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.white)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.grey.shade400)),
+                  errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      )),
+                  focusedErrorBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                    ),
+                  ),
+                  fillColor: Colors.grey.shade200,
+                  filled: true),
+              validator: (value) {
+                if (!StringValidator.validateEmail(value!)) {
+                  return 'Invalid Email ';
+                }
+                return null;
+              },
+              keyboardType: TextInputType.emailAddress,
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your email';
-              }
-              return null;
-            },
           ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Phone',
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextFormField(
+              controller: _phoneController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: InputDecoration(
+                  label: const Text('Phone'),
+                  enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.white)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(color: Colors.grey.shade400)),
+                  errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderSide: BorderSide(
+                        color: Colors.red,
+                      )),
+                  focusedErrorBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                    ),
+                  ),
+                  fillColor: Colors.grey.shade200,
+                  filled: true),
+              validator: (value) {
+                if (!StringValidator.validatePhone(value!)) {
+                  return 'Invalid Phone Number';
+                }
+                return null;
+              },
+              keyboardType: TextInputType.phone,
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please enter your phone number';
-              }
-              return null;
-            },
           ),
-          ElevatedButton.icon
-          (
-            onPressed: ()
-            {
-              if (_formKey.currentState!.validate()) 
-              {
-                ScaffoldMessenger.of(context).showSnackBar
-                (
-                  const SnackBar(content: Text('Processing Data')),
-                );
-              }
-            }, 
-            icon: const Icon(Icons.send), 
-            label: const Text('Submit')
-          )
-          // ElevatedButton
-          // (
-          //   onPressed: () 
-          //   {
-              // if (_formKey.currentState!.validate()) 
-              // {
-              //   ScaffoldMessenger.of(context).showSnackBar
-              //   (
-              //     const SnackBar(content: Text('Processing Data')),
-              //   );
-              // }
-          //   },
-          //   child: Text('Submit'),
-          // ),
+          ElevatedButton.icon(
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Processing Data')),
+                  );
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  await Provider.of<UserProvider>(context, listen: false)
+                      .addContact(
+                          _usernameController.text,
+                          _phoneController.text,
+                          _emailController.text,
+                          Provider.of<UserProvider>(context, listen: false)
+                              .user
+                              .id);
+                  await Provider.of<UserProvider>(context, listen: false)
+                      .updateList(
+                          Provider.of<UserProvider>(context, listen: false)
+                              .user
+                              .id);
+                  setState(() {
+                    _isLoading = false;
+                  });
+                  Navigator.pop(context);
+                }
+              },
+              icon: const Icon(Icons.add),
+              label: _isLoading ? const Center(child: CircularProgressIndicator(),): const Text('Add Contact'))
         ],
       ),
     );

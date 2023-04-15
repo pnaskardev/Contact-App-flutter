@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context, listen: false).user;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -23,15 +22,15 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Center(
           child: Consumer<UserProvider>(
-            builder: (context, data, child) {
-              return ListView.builder(
+            builder: (context, data, child) 
+            {
+              return data.user.contacts.isEmpty ?  const Center(
+                      child: Text('There are no contacts'),
+                    ):
+              ListView.builder(
                 itemCount: data.user.contacts.length,
-                itemBuilder: (context, index) {
-                  if (data.user.contacts.isEmpty) {
-                    return const Center(
-                      child: Text('No Contacts have been added'),
-                    );
-                  }
+                itemBuilder: (context, index) 
+                {
                   return Padding(
                     padding: const EdgeInsets.all(13.0),
                     child: Center(
@@ -40,6 +39,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ListTile(
                           title: Text(data.user.contacts[index].name!),
                           subtitle: Text(data.user.contacts[index].email!),
+                          trailing: IconButton(
+                            onPressed: () async {
+                              await Provider.of<UserProvider>(context,
+                                      listen: false)
+                                  .deleteContact(data.user.id,
+                                      data.user.contacts[index].id!);
+
+                              await Provider.of<UserProvider>(context,
+                                      listen: false)
+                                  .updateList(data.user.id);
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
                         ),
                       ),
                     ),
@@ -53,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton.extended(
             icon: const Icon(Icons.add),
             onPressed: () {
-              showModalSheet(context,FormWidget());
+              showModalSheet(context, const FormWidget());
             },
             label: const Text('Add Contact')),
       ),

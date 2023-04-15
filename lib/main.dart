@@ -46,22 +46,6 @@ class _MainAppState extends State<MainApp> {
                   useMaterial3: true,
                 ),
                 onGenerateRoute: (settings) => generateRoute(settings),
-                // home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-                // ? const HomeScreen()
-                // :const  AutheScreen()
-                // home: Consumer<UserProvider>(
-                //   builder: (context, value, child) {
-                //     if (value.user.token.isNotEmpty) {
-                //       return const HomeScreen();
-                //     } else if (value.user.token.isEmpty) {
-                //       return const AutheScreen();
-                //     } else {
-                //       return const Center(
-                //         child: CircularProgressIndicator(),
-                //       );
-                //     }
-                //   },
-                // ),
                 home: getHome(snapshot.data));
           }
         });
