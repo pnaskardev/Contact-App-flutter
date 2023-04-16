@@ -83,8 +83,8 @@ class UserProvider extends ChangeNotifier {
           context: context,
           onSuccess: () async {
              setUser(res.body);
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //     const SnackBar(content: Text('Contact has been added')));
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Contact has been added',),backgroundColor: Colors.green,));
           });
     } catch (e) {
       log(e.toString());
@@ -113,7 +113,7 @@ class UserProvider extends ChangeNotifier {
           onSuccess: () async {
             setUser(res.body);
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Contact has been deleted')));
+                const SnackBar(content: Text('Contact has been deleted'),backgroundColor: Colors.green,));
           });
     } catch (e) {
       log(e.toString());
@@ -144,7 +144,7 @@ class UserProvider extends ChangeNotifier {
           onSuccess: () async {
             setUser(res.body);
             ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Contact has been updated')));
+                const SnackBar(content: Text('Contact has been updated'),backgroundColor: Colors.green,));
           });
     } catch (e) {
       log(e.toString());

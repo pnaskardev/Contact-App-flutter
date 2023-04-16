@@ -62,7 +62,15 @@ class _FormWidgetState extends State<FormWidget> {
     return Form(
       key: _formKey,
       child: Column(
-        children: [
+        children: 
+        [
+           Text(
+            widget.contact!=null ? 'Edit Contact':'Add Contact',
+            style:const  TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(

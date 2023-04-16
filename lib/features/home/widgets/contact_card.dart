@@ -37,40 +37,69 @@ class _ContactCardState extends State<ContactCard> {
             onEditPressed: widget.onEdit,
           )),
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
         elevation: 5.0,
-        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: ListTile(
-          leading: const Icon(Icons.person),
-          title: Text(widget.name),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => widget.onEdit(),
-                // onPressed: () => (){},
+        margin: const EdgeInsets.all(13.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: 
+          [
+            
+            ListTile(
+              leading: CircleAvatar(
+              child: Text(widget.name.substring(0, 1)),
+            ),
+              title: Text(widget.name,overflow: TextOverflow.ellipsis,),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit,color: Colors.deepPurpleAccent,),
+                    onPressed: () => widget.onEdit(),
+                  ),
+                  IconButton(
+                    icon: _isLoading
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Icon(Icons.delete,color: Colors.red,),
+                    onPressed: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      await widget.onDelete();
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    },
+                  ),
+                ],
               ),
-              IconButton(
-                icon: _isLoading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : const Icon(Icons.delete),
-                onPressed: () async {
-                  setState(() {
-                    _isLoading = true;
-                  });
-                  await widget.onDelete();
-                  setState(() {
-                    _isLoading = false;
-                  });
-                },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: SizedBox
+              (
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('email: ${widget.email}',overflow: TextOverflow.ellipsis,),
+                  ],
+                )
               ),
-            ],
-          ),
+            ),
+             Padding(
+               padding: const EdgeInsets.all(8.0),
+               child: SizedBox
+                         (
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text('phone: ${widget.phone}',overflow: TextOverflow.ellipsis,),
+                  ],
+                )
+                         ),
+             ),
+          ],
         ),
       ),
     );
@@ -104,8 +133,6 @@ class _ContactInfoWidgetState extends State<ContactInfoWidget>
   var isLoading = false;
   @override
   Widget build(BuildContext context) {
-    widget.imageUrl =
-        'https://images.pexels.com/photos/16161517/pexels-photo-16161517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -113,8 +140,8 @@ class _ContactInfoWidgetState extends State<ContactInfoWidget>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage(widget.imageUrl!),
               radius: 30,
+              child:Text(widget.name.substring(0, 1)),
             ),
             const SizedBox(height: 16),
             Text(
@@ -132,30 +159,6 @@ class _ContactInfoWidgetState extends State<ContactInfoWidget>
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     ElevatedButton(
-            //       onPressed: () => widget.onEditPressed(),
-            //       child: const Text('Edit'),
-            //     ),
-            //     const SizedBox(width: 16),
-            //     isLoading==true ?const CircularProgressIndicator() : ElevatedButton(
-            //       onPressed: () async {
-            //         setState(() {
-            //           isLoading = true;
-            //         });
-            //         await widget.onDeletePressed();
-            //         setState(() {
-            //           isLoading = false;
-            //         });
-            //         Navigator.of(context).pop();
-            //       },
-            //       style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            //       child:const Text('Delete'),
-            //     ),
-            //   ],
-            // ),
           ],
         ),
       ),

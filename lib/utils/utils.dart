@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-void showSnackBar(BuildContext context, String text) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+void showSnackBar(BuildContext context, String text,bool success) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text),backgroundColor: success?Colors.green:Colors.redAccent,));
 }
 
 void showModalSheet(BuildContext context, Widget widget) {
@@ -32,4 +34,16 @@ void showAlertDialog(BuildContext context)
       return alert;
     },
   );
+}
+
+
+pickImage(ImageSource source) async 
+{
+  final ImagePicker imagePicker = ImagePicker();
+  XFile? file = await imagePicker.pickImage(source: source);
+
+  if (file != null) {
+    return await file.readAsBytes();
+  }
+  log('No Image selected');
 }
