@@ -43,7 +43,7 @@ class AuthService {
       }
     } catch (e) {
       log('---->${e.toString()}');
-      showSnackBar(context, '${e.toString}');
+      showSnackBar(context, '${e.toString}',false);
     }
     return 0;
   }
@@ -57,13 +57,16 @@ class AuthService {
     required String password,
   }) async {
     try {
-      User user = User(
-          id: '',
-          name: name,
-          email: email,
-          phone: phone,
-          password: password,
-          token: '');
+      User user = User
+      (
+        id: '',
+        name: name,
+        email: email,
+        phone: phone,
+        password: password,
+        token: '',
+        contacts: []
+      );
       http.Response res = await http.post(Uri.parse('$uri/auth/signup'),
           // body: user.toJson(),
           body: user.toJson(),
@@ -75,7 +78,7 @@ class AuthService {
           response: res,
           context: context,
           onSuccess: () async {
-            showSnackBar(context, 'Account created!!');
+            showSnackBar(context, 'Account created!!',true);
             SharedPreferences prefs = await SharedPreferences.getInstance();
             await prefs.setString(
                 'x-auth-token', jsonDecode(res.body)['token']);
@@ -86,7 +89,7 @@ class AuthService {
     } catch (e) {
       log('$uri/auth/signup');
       log(e.toString());
-      showSnackBar(context, '${e.toString}');
+      showSnackBar(context, '${e.toString}',false);
     }
   }
 
@@ -117,7 +120,7 @@ class AuthService {
     } catch (e) {
       log('$uri/auth/signup');
       log(e.toString());
-      showSnackBar(context, '${e.toString}');
+      showSnackBar(context, '${e.toString}',false);
     }
   }
 }
