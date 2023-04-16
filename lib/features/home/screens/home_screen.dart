@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ivykids_assignment/features/home/widgets/contact_card.dart';
 import 'package:ivykids_assignment/features/home/widgets/widgets.dart';
 import 'package:ivykids_assignment/providers/user_provider.dart';
+import 'package:ivykids_assignment/utils/error-handling.dart';
 import 'package:ivykids_assignment/utils/utils.dart';
 import 'package:provider/provider.dart';
 
@@ -22,42 +24,44 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Center(
           child: Consumer<UserProvider>(
-            builder: (context, data, child) 
-            {
-              return data.user.contacts.isEmpty ?  const Center(
+            builder: (context, data, child) {
+              return data.user.contacts.isEmpty
+                  ? const Center(
                       child: Text('There are no contacts'),
-                    ):
-              ListView.builder(
-                itemCount: data.user.contacts.length,
-                itemBuilder: (context, index) 
-                {
-                  return Padding(
-                    padding: const EdgeInsets.all(13.0),
-                    child: Center(
-                      child: Card(
-                        elevation: 5,
-                        child: ListTile(
-                          title: Text(data.user.contacts[index].name!),
-                          subtitle: Text(data.user.contacts[index].email!),
-                          trailing: IconButton(
-                            onPressed: () async {
-                              await Provider.of<UserProvider>(context,
-                                      listen: false)
-                                  .deleteContact(data.user.id,
-                                      data.user.contacts[index].id!);
+                    )
+                  : ListView.builder(
+                      itemCount: data.user.contacts.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(13.0),
+                          
+                          child: ContactCard(
+                            name: data.user.contacts[index].name!,
+                            email: data.user.contacts[index].email!,
+                            phone: data.user.contacts[index].phone!,
+                            onDelete: () async {
+                              try {
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .setLoading(true);
 
-                              await Provider.of<UserProvider>(context,
-                                      listen: false)
-                                  .updateList(data.user.id);
+                                // showAlertDialog(context);
+                                await Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .deleteContact(data.user.id,
+                                        data.user.contacts[index].id!, context);
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .setLoading(false);
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(e.toString())));
+                              }
                             },
-                            icon: const Icon(Icons.delete),
                           ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
+                        );
+                      },
+                    );
             },
           ),
         ),

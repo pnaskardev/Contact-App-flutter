@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:ivykids_assignment/providers/user_provider.dart';
 import 'package:ivykids_assignment/utils/string_validator.dart';
@@ -132,36 +130,41 @@ class _FormWidgetState extends State<FormWidget> {
               keyboardType: TextInputType.phone,
             ),
           ),
-          ElevatedButton.icon(
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
-                  setState(() {
-                    _isLoading = true;
-                  });
-                  await Provider.of<UserProvider>(context, listen: false)
-                      .addContact(
-                          _usernameController.text,
-                          _phoneController.text,
-                          _emailController.text,
-                          Provider.of<UserProvider>(context, listen: false)
+          _isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ElevatedButton.icon(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      try {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await Provider.of<UserProvider>(context, listen: false)
+                            .addContact
+                            (
+                              _usernameController.text,
+                              _phoneController.text,
+                              _emailController.text,
+                              Provider.of<UserProvider>(context,listen: false)
                               .user
-                              .id);
-                  await Provider.of<UserProvider>(context, listen: false)
-                      .updateList(
-                          Provider.of<UserProvider>(context, listen: false)
-                              .user
-                              .id);
-                  setState(() {
-                    _isLoading = false;
-                  });
-                  Navigator.pop(context);
-                }
-              },
-              icon: const Icon(Icons.add),
-              label: _isLoading ? const Center(child: CircularProgressIndicator(),): const Text('Add Contact'))
+                              .id,
+                              context
+                            );
+                        setState(() {
+                          _isLoading = false;
+                        });
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(e.toString())));
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Add Contact'))
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,9 @@ void httpErrorHandle({
 }) {
   switch (response.statusCode) {
     case 200:
+      onSuccess();
+      break;
+    case 201:
       onSuccess();
       break;
     case 400:

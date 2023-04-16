@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ivykids_assignment/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 
 void showSnackBar(BuildContext context, String text) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
@@ -23,6 +21,19 @@ void showModalSheet(BuildContext context, Widget widget) {
       //     child: widget,
       //   );
       // });
+    },
+  );
+}
+
+void showAlertDialog(BuildContext context)
+{
+  AlertDialog alert=const AlertDialog(
+    content:   Center(child: CircularProgressIndicator()),
+  );
+  showDialog(barrierDismissible: false,
+    context:context,
+    builder:(BuildContext context){
+      return alert;
     },
   );
 }
