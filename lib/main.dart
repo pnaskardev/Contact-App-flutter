@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ivykids_assignment/features/auth/screens/auth_screen.dart';
 import 'package:ivykids_assignment/features/auth/services/auth_service.dart';
 import 'package:ivykids_assignment/features/home/screens/home_screen.dart';
@@ -44,7 +45,29 @@ class _MainAppState extends State<MainApp> {
                 title: 'IvyKids',
                 theme: ThemeData(
                   useMaterial3: true,
-                ),
+                  fontFamily: GoogleFonts.lexendDeca().fontFamily,
+                  textTheme: TextTheme
+                  (
+                    titleLarge: GoogleFonts.lexendDeca
+                    (
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 4,
+                    ),
+                    titleMedium: GoogleFonts.lexendDeca
+                    (
+                      fontSize: 20,
+                      // fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                    titleSmall: GoogleFonts.lexendDeca
+                    (
+                      fontSize: 10,
+                      // fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+        
+                    ),
+                ),),
                 onGenerateRoute: (settings) => generateRoute(settings),
                 home: getHome(snapshot.data));
           }
