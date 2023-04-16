@@ -5,22 +5,18 @@ void showSnackBar(BuildContext context, String text) {
 }
 
 void showModalSheet(BuildContext context, Widget widget) {
-  final size = MediaQuery.of(context).size;
-  showModalBottomSheet(
+  showModalBottomSheet
+  (
+    isScrollControlled: true,
     context: context,
     builder: (BuildContext context) {
-      return Padding(
-        padding: const EdgeInsets.all(13.0),
-        child: widget,
+      return SingleChildScrollView(
+        child: Padding(
+          // padding: const EdgeInsets.all(13.0),
+          padding: EdgeInsets.only(top:16.0,left: 25.0,right: 25.0 ,bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: widget,
+        ),
       );
-      // return StatefulBuilder(
-      //     builder: (BuildContext context, StateSetter setState) {
-      //   bool _isLoading = false;
-      //   return Padding(
-      //     padding: const EdgeInsets.all(8.0),
-      //     child: widget,
-      //   );
-      // });
     },
   );
 }

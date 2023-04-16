@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     await Provider.of<UserProvider>(context,
                                         listen: false)
                                     .updateContact(data.user.id,
-                                        data.user.contacts[index].id!, context);
+                                        data.user.contacts[index].id!,contact.name!,contact.email!,contact.phone!,context);
                                     Provider.of<UserProvider>(context,
                                         listen: false)
                                     .setLoading(false);
