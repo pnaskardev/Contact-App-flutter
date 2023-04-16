@@ -1,21 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:ivykids_assignment/model/contact.dart';
 import 'package:ivykids_assignment/providers/user_provider.dart';
 import 'package:ivykids_assignment/utils/string_validator.dart';
 import 'package:provider/provider.dart';
 
 class FormWidget extends StatefulWidget {
-  const FormWidget({super.key});
-
+  const FormWidget({super.key,this.contact,required this.onSave});
+  final Contacts? contact;
+  final Function(Contacts) onSave;
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
 
-class _FormWidgetState extends State<FormWidget> {
+class _FormWidgetState extends State<FormWidget> 
+{
   var _isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _emailController = TextEditingController();
+  late var _usernameController = TextEditingController();
+  late var _phoneController = TextEditingController();
+  late var _emailController = TextEditingController();
+
+  @override
+  void initState() 
+  {  
+    super.initState();
+    if (widget.contact != null) 
+    {
+      _usernameController = TextEditingController(text: widget.contact?.name ?? '');
+      _emailController = TextEditingController(text: widget.contact?.email ?? '');
+      _phoneController = TextEditingController(text: widget.contact?.phone ?? '');
+    }
+  }
 
   @override
   void dispose() {
@@ -23,6 +38,21 @@ class _FormWidgetState extends State<FormWidget> {
     _usernameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
+  }
+
+
+  void _handleSave() 
+  {
+    // Create a new contact object with the updated data
+    final contact = Contacts
+    (
+      name: _usernameController.text.trim(),
+      email: _emailController.text.trim(),
+      phone: _phoneController.text.trim(),
+    );
+
+    // Call the onSave callback to save the contact
+    widget.onSave(contact);
   }
 
   @override
@@ -33,7 +63,8 @@ class _FormWidgetState extends State<FormWidget> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
+            child: TextFormField
+            (
               controller: _usernameController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
@@ -142,16 +173,15 @@ class _FormWidgetState extends State<FormWidget> {
                           _isLoading = true;
                         });
                         await Provider.of<UserProvider>(context, listen: false)
-                            .addContact
-                            (
-                              _usernameController.text,
-                              _phoneController.text,
-                              _emailController.text,
-                              Provider.of<UserProvider>(context,listen: false)
-                              .user
-                              .id,
-                              context
-                            );
+                            .addContact(
+                                _usernameController.text,
+                                _phoneController.text,
+                                _emailController.text,
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .user
+                                    .id,
+                                context);
                         setState(() {
                           _isLoading = false;
                         });
@@ -163,8 +193,8 @@ class _FormWidgetState extends State<FormWidget> {
                       }
                     }
                   },
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add Contact'))
+                  icon: Icon(widget.contact == null ? Icons.add : Icons.edit),
+                  label: Text(widget.contact == null ? 'Add Contact' : 'Update'))
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ivykids_assignment/features/home/widgets/contact_card.dart';
 import 'package:ivykids_assignment/features/home/widgets/widgets.dart';
+import 'package:ivykids_assignment/model/contact.dart';
 import 'package:ivykids_assignment/providers/user_provider.dart';
 import 'package:ivykids_assignment/utils/error-handling.dart';
 import 'package:ivykids_assignment/utils/utils.dart';
@@ -39,6 +40,36 @@ class _HomeScreenState extends State<HomeScreen> {
                             name: data.user.contacts[index].name!,
                             email: data.user.contacts[index].email!,
                             phone: data.user.contacts[index].phone!,
+                            onEdit: () async
+                            {
+                              try 
+                              {
+                                showModalSheet(context, FormWidget(contact: Contacts
+                                  (
+                                    name: data.user.contacts[index].name!,
+                                    email: data.user.contacts[index].email!,
+                                    phone: data.user.contacts[index].phone!,
+                                  ), 
+                                  onSave: (Contacts contact) async
+                                  {
+                                      Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .setLoading(true);
+                                    await Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .updateContact(data.user.id,
+                                        data.user.contacts[index].id!, context);
+                                    Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .setLoading(false);
+                                  },));
+                               
+                              } catch (e) 
+                              {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(e.toString())));
+                              }
+                            },
                             onDelete: () async {
                               try {
                                 Provider.of<UserProvider>(context,
@@ -69,7 +100,28 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: FloatingActionButton.extended(
             icon: const Icon(Icons.add),
             onPressed: () {
-              showModalSheet(context, const FormWidget());
+              showModalSheet(context,  FormWidget
+              (
+                onSave: (Contacts contact) async
+                {
+                    Provider.of<UserProvider>(context,
+                      listen: false)
+                  .setLoading(true);
+                  await Provider.of<UserProvider>(context,
+                      listen: false)
+                  .addContact
+                  (
+                    contact.name!,
+                    contact.phone!, 
+                    contact.email!, 
+                    Provider.of<UserProvider>(context,listen: false).user.id,
+                    context
+                  );
+                  Provider.of<UserProvider>(context,
+                      listen: false)
+                  .setLoading(false);
+                }
+              ));
             },
             label: const Text('Add Contact')),
       ),

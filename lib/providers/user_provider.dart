@@ -97,4 +97,30 @@ class UserProvider extends ChangeNotifier {
       log(e.toString());
     }
   }
+
+  Future<void> updateContact(
+      String userId, String contactId, BuildContext context) async {
+    try {
+      http.Response res = await http.patch(
+          Uri.parse(
+              '$uri/contacts/edit-contact?userId=$userId&contactId=$contactId'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          });
+      log(res.body);
+      log(res.statusCode.toString());
+      httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () async {
+            setUser(res.body);
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Contact has been updated')));
+          });
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+
 }

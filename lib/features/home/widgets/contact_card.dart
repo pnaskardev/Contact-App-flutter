@@ -5,14 +5,14 @@ class ContactCard extends StatelessWidget {
   final String email;
   final String phone;
   final Function onDelete;
-  // final Function onEdit;
+  final Function onEdit;
 
   const ContactCard({super.key, 
     required this.name,
     required this.email,
     required this.phone,
     required this.onDelete,
-    // required this.onEdit,
+    required this.onEdit,
   });
 
   @override
@@ -36,8 +36,8 @@ class ContactCard extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.edit),
-              // onPressed: () => onEdit(),
-              onPressed: () => (){},
+              onPressed: () => onEdit(),
+              // onPressed: () => (){},
             ),
             IconButton(
               icon: const Icon(Icons.delete),
